@@ -6,7 +6,8 @@ import CustomButton from '../custom-button/custom-button.component';
 
 import {
   googleSignInStart,
-  emailSignInStart
+  emailSignInStart,
+  facebookSignInStart
 } from '../../redux/user/user.actions';
 
 import {
@@ -15,7 +16,7 @@ import {
   ButtonsBarContainer
 } from './sign-in.styles';
 
-const SignIn = ({ emailSignInStart, googleSignInStart }) => {
+const SignIn = ({ emailSignInStart, googleSignInStart,facebookSignInStart }) => {
   const [userCredentials, setCredentials] = useState({
     email: '',
     password: ''
@@ -67,6 +68,14 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
             Sign in with Google
           </CustomButton>
         </ButtonsBarContainer>
+
+        <CustomButton
+            type='button'
+            onClick={facebookSignInStart}
+          >
+            Sign in with Facebook
+          </CustomButton>
+
       </form>
     </SignInContainer>
   );
@@ -74,6 +83,7 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
 
 const mapDispatchToProps = dispatch => ({
   googleSignInStart: () => dispatch(googleSignInStart()),
+  facebookSignInStart: () => dispatch(facebookSignInStart()),
   emailSignInStart: (email, password) =>
     dispatch(emailSignInStart({ email, password }))
 });

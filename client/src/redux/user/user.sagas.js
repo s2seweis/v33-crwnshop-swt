@@ -14,6 +14,7 @@ import {
 import {
   auth,
   googleProvider,
+  facebookProvider,
   createUserProfileDocument,
   getCurrentUser
 } from '../../firebase/firebase.utils';
@@ -41,14 +42,14 @@ export function* signInWithGoogle() {
   }
 }
 
-// export function* signInWithFacebook() {
-//   try {
-//     const { user } = yield auth.signInWithPopup(facebookProvider);
-//     yield getSnapshotFromUserAuth(user);
-//   } catch (error) {
-//     yield put(signInFailure(error));
-//   }
-// }
+export function* signInWithFacebook() {
+  try {
+    const { user } = yield auth.signInWithPopup(facebookProvider);
+    yield getSnapshotFromUserAuth(user);
+  } catch (error) {
+    yield put(signInFailure(error));
+  }
+}
 
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
@@ -95,6 +96,10 @@ export function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 }
 
+export function* onFacebookSignInStart() {
+  yield takeLatest(UserActionTypes.FACEBOOK_SIGN_IN_START, signInWithFacebook);
+}
+
 export function* onEmailSignInStart() {
   yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail);
 }
@@ -118,6 +123,7 @@ export function* onSignUpSuccess() {
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
+    call(onFacebookSignInStart),
     call(onEmailSignInStart),
     call(onCheckUserSession),
     call(onSignOutStart),
